@@ -9,7 +9,7 @@ export default function Home({ posts }) {
   return (
     <div style={{ padding: "32px 0px" }}>
       <Head>
-        <title>ezirmusitua's Blog</title>
+        <title>ezirmusitua&apos;s Blog</title>
       </Head>
 
       <div className='posts'>
