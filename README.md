@@ -7,7 +7,8 @@
 ## 部署环境要求
 
 ```bash
-sudo apt update -y && sudo apt install unzip docker.io nginx
+apt update -y && apt install unzip docker.io nginx
+mkdir /src
 
 echo '
 server {
@@ -26,7 +27,10 @@ server {
                 proxy_pass http://localhost:3000;
         }
 }
-'
+' > /etc/nginx/sites-available/<your_site>
+
+sudo ln -sf /etc/nginx/sites-available/<your_site> /etc/nginx/sites-enabled/<your_site>
+nginx -t && nginx -s reload
 ```
 
 ## 项目结构
@@ -73,3 +77,9 @@ server {
 4. 执行 `git commit -m <msg>`(需要 lint 通过)
 
 5. 执行 `git push`(push 到远端之前会执行部署, 参见 .scripts/deploy.sh)
+
+## 备注
+
+<b style="color: red">仅在 macOS 上进行过测试.</b>
+
+
