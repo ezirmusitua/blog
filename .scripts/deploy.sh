@@ -1,14 +1,18 @@
 #!/usr/bin/bash
 
+sh .scripts/export_env.sh
+
 mkdir app
 
-rsync -r --exclude=node_modules --exclude=app --exclude=.git --exclude=.next . app
+rsync -r --exclude=.vscode --exclude=node_modules --exclude=app --exclude=.git --exclude=.next . app
 
 zip app.zip app -r
 
-scp app.zip qcloud.apple:/src
+ssh $REMOTE -t "mkdir /src"
 
-ssh -t qcloud.apple < .scripts/update_app.sh
+scp app.zip $DEPLOY_TARGET:/src
+
+# ssh -t $DEPLOY_TARGET < .scripts/update_app.sh
 
 rm app.zip
 rm -rf app
