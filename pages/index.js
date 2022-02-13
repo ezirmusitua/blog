@@ -4,12 +4,13 @@ import matter from 'gray-matter'
 import Head from 'next/head'
 import Post from '../components/Post'
 import { sortByDate } from '../utils'
+import metadata from '../metadata'
 
 export default function Home({ posts }) {
   return (
     <div style={{ padding: "32px 0px" }}>
       <Head>
-        <title>ezirmusitua&apos;s Blog</title>
+        <title>{metadata.site_title}</title>
       </Head>
 
       <div className='posts'>
