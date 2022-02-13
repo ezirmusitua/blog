@@ -40,6 +40,9 @@ nginx -t && nginx -s reload
 ├── .eslintrc
 ├── .gitignore
 ├── .env
+├── .git_hooks
+│   ├── pre-commit
+│   └── pre-push
 ├── .scripts
 │   ├── deploy.sh
 │   └── update_app.sh
@@ -68,18 +71,22 @@ nginx -t && nginx -s reload
 
 ## HOW TO
 
+### 初始化
+
 1. 在 `.env` 文件中调整基本站点数据
 
-2. 将 `markdown` 文件保存到 posts 文件夹中
+2. 将 .git_hooks 中的钩子放置到 .git/hooks 中
 
-3. 执行 `git add .`
+### 发布
 
-4. 执行 `git commit -m <msg>`(需要 lint 通过)
+1. 将 `markdown` 文件保存到 posts 文件夹中
 
-5. 执行 `git push`(push 到远端之前会执行部署, 参见 .scripts/deploy.sh)
+2. 执行 `git add .`
 
-## 备注
+3. 执行 `git commit -m <msg>`(需要 lint 通过)
 
-<b style="color: red">仅在 macOS 上进行过测试.</b>
+4. 执行 `git push`(push 到远端之前会执行部署, 参见 `.scripts/deploy.sh`)
+
+<b style="color: red">仅在 macOS 上进行过测试. 手动发布查看 `.scripts/deploy.sh`</b>
 
 
