@@ -21,7 +21,7 @@ cover_image: 'https://images.unsplash.com/photo-1581273154768-0a9a16887d2a?ixlib
 
 基本思路是实现一个 B/S 架构的应用, 接收目标文件夹路径并读取其中的文件信息后构建基本浏览器界面, 启动一个建议的 HTTP 服务器用于 host 静态内容(基本界面和图片).
 
-<a href="/images/project_browse_notes/modeling.svg" style="width: 100%; height: 400px;">
+<a target="_blank" href="/images/project_browse_notes/modeling.svg" style="width: 100%;">
 <img alt="C4 Modeling" src="/images/project_browse_notes/modeling.svg" style="object-fit: contain; object-position: center">
 </a>
 
