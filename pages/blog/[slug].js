@@ -5,11 +5,8 @@ import marked from 'marked'
 import Link from 'next/link'
 import Head from 'next/head'
 
-export default function PostPage({
-  frontmatter: { title, date, cover_image, keywords, excerpt },
-  slug,
-  content,
-}) {
+export default function PostPage({ frontmatter, content }) {
+  const { title, date, cover_image, keywords, excerpt } = frontmatter;
   return (
     <div style={{ padding: "32px 0px" }}>
       <Head>
@@ -54,14 +51,13 @@ export async function getStaticProps({ params: { slug } }) {
     path.join('posts', slug + '.md'),
     'utf-8'
   )
-
   const { data: frontmatter, content } = matter(markdownWithMeta)
-
   return {
     props: {
       frontmatter,
       slug,
       content,
     },
+    revalidate: 60
   }
 }
