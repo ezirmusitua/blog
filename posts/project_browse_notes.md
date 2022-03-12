@@ -3,6 +3,7 @@ title: 'browse: 使用浏览器查看动态 webp 图片'
 date: '2022/03/12'
 excerpt: '由于 MacOS 下的 preview 工具无法查看动态 webp 图片, 因此使用 Node.js 实现使用浏览器查看图片的工具.'
 cover_image: 'https://images.unsplash.com/photo-1581273154768-0a9a16887d2a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3312&q=80'
+keywords: 'animated webp,pkg,MacOS,Node.js'
 ---
 
 由于 MacOS 下的 preview 无法查看动态 webp 文件, 因此开发了 [browse](https://github.com/ezirmusitua/browse), 借助浏览器浏览这类文件.
