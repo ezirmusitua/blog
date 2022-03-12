@@ -3,14 +3,20 @@ import path from 'path'
 import matter from 'gray-matter'
 import marked from 'marked'
 import Link from 'next/link'
+import Head from 'next/head'
 
 export default function PostPage({
-  frontmatter: { title, date, cover_image },
+  frontmatter: { title, date, cover_image, keywords, excerpt },
   slug,
   content,
 }) {
   return (
     <div style={{ padding: "32px 0px" }}>
+      <Head>
+        <title>{title}</title>
+        <meta key="keywords" content={(keywords || []).join(",")}></meta>
+        <meta key="description" content={excerpt}></meta>
+      </Head>
       <div style={{ position: "fixed", bottom: "64px", right: "64px" }}>
         <Link href='/'>
           <a className='btn btn-back'>主页</a>
@@ -18,7 +24,7 @@ export default function PostPage({
       </div>
       <div className='card card-page'>
         <h1 className='post-title'>{title}</h1>
-        <div className='post-date'>Posted on {date}</div>
+        <div className='post-date'>发布于 {date}</div>
         <img src={cover_image} alt='' />
         <div className='post-body'>
           <div dangerouslySetInnerHTML={{ __html: marked(content) }}></div>
