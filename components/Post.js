@@ -8,7 +8,7 @@ export default function Post({ post }) {
         <Image layout="fill" objectFit="cover" objectPosition="50% 50%" src={post.frontmatter.cover_image} alt=''></Image>
       </div>
 
-      <div className='post-date'>Posted on {post.frontmatter.date}</div>
+      <div className='post-date'>发布于 {post.frontmatter.date}</div>
 
       <h3>{post.frontmatter.title}</h3>
 

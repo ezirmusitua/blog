@@ -14,7 +14,7 @@ export default function PostPage({
     <div style={{ padding: "32px 0px" }}>
       <Head>
         <title>{title}</title>
-        <meta key="keywords" content={(keywords || []).join(",")}></meta>
+        <meta key="keywords" content={keywords || ""}></meta>
         <meta key="description" content={excerpt}></meta>
       </Head>
       <div style={{ position: "fixed", bottom: "64px", right: "64px" }}>
