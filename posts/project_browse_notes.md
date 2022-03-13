@@ -20,7 +20,7 @@ keywords: 'animated webp,pkg,MacOS,Node.js'
 
 ## 开发思路
 
-基本思路是实现一个 B/S 架构的应用, 接收目标文件夹路径并读取其中的文件信息后构建基本浏览器界面, 启动一个建议的 HTTP 服务器用于 host 静态内容(基本界面和图片).
+基本思路是实现一个 B/S 架构的应用, 接收目标文件夹路径并读取其中的文件信息后构建基本浏览器界面, 启动一个简易的 HTTP 服务器用于 host 静态内容(基本界面和图片).
 
 <a target="_blank" href="/images/project_browse_notes/modeling.svg" style="width: 100%;">
 <img alt="C4 Modeling" src="/images/project_browse_notes/modeling.svg" style="object-fit: contain; object-position: center">
@@ -42,13 +42,13 @@ keywords: 'animated webp,pkg,MacOS,Node.js'
 
 2. 安装依赖: `yarn` 或 `npm install`
 
-3. 使用 [pkg](https://github.com/vercel/pkg) 编译可执行文件: `yarn build` 或 `npm run build`
+3. 使用 [pkg](https://github.com/vercel/pkg) 打包可执行文件: `yarn build` 或 `npm run build`
 
 ## 使用
 
 1. (可选)创建软连接: `ln -sf /path/to/project/build/browse /usr/local/bin`
 
-2. 在 shell 中打开目标文件夹: `https://github.com/vercel/pkg`
+2. 在 shell 中打开目标文件夹: `browse /absolute/path/to/directory`
 
 ## 改进思路
 
