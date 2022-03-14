@@ -5,14 +5,15 @@ import Head from 'next/head'
 import Post from '../components/Post'
 import { sortByDate } from '../utils'
 import metadata from '../metadata'
+import Statistics from '../components/Statistics'
 
 export default function Home({ posts }) {
   return (
     <div style={{ padding: "32px 0px" }}>
       <Head>
         <title>{metadata.site_title}</title>
+        <Statistics></Statistics>
       </Head>
-
       <div className='posts'>
         {posts.map((post, index) => (
           <Post key={index} post={post} />
