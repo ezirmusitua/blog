@@ -33,9 +33,15 @@ export default function PostPage({ frontmatter, content }) {
 
 export async function getStaticPaths() {
   const files = fs.readdirSync(path.join('posts'))
+<<<<<<< HEAD
   const paths = files.filter(() => {
     const markdownWithMeta = fs.readFileSync(
       path.join('posts', slug + '.md'),
+=======
+  const paths = files.filter((filename) => {
+    const markdownWithMeta = fs.readFileSync(
+      path.join('posts', filename),
+>>>>>>> 6053b88 (Feat: add google/baidu statistics code)
       'utf-8'
     )
     const { data: frontmatter } = matter(markdownWithMeta)
