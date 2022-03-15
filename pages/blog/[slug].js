@@ -4,7 +4,6 @@ import matter from 'gray-matter'
 import marked from 'marked'
 import Link from 'next/link'
 import Head from 'next/head'
-import Statistics from '../../components/Statistics'
 
 export default function PostPage({ frontmatter, content }) {
   const { title, date, cover_image, keywords, excerpt } = frontmatter;
@@ -14,7 +13,6 @@ export default function PostPage({ frontmatter, content }) {
         <title>{title}</title>
         <meta name="keywords" content={keywords || ""}></meta>
         <meta name="description" content={excerpt}></meta>
-        <Statistics></Statistics>
       </Head>
       <div style={{ position: "fixed", bottom: "64px", right: "64px" }}>
         <Link href='/'>
@@ -35,11 +33,17 @@ export default function PostPage({ frontmatter, content }) {
 
 export async function getStaticPaths() {
   const files = fs.readdirSync(path.join('posts'))
-
-  const paths = files.map((filename) => ({
+  const paths = files.filter(() => {
+    const markdownWithMeta = fs.readFileSync(
+      path.join('posts', slug + '.md'),
+      'utf-8'
+    )
+    const { data: frontmatter } = matter(markdownWithMeta)
+    return frontmatter.draft !== 'true'
+  }).map((filename) => ({
     params: {
       slug: filename.replace('.md', ''),
-    },
+    }
   }))
 
   return {
