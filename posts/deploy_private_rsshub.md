@@ -3,6 +3,7 @@ title: "私有化部署 RSSHub 服务"
 date: "2022/03/20"
 excerpt: "本文主要介绍了如何私有化部署支持无头浏览器及代理的 RSSHub 服务。"
 keywords: "RSSHub,RSS,browerless"
+cover_image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80"
 draft: "false"
 ---
 
