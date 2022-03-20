@@ -6,7 +6,7 @@ export default function Header() {
     <header>
       <div className='container'>
         <Link href='/' passHref>
-          <h2>{metadata.site_title}</h2>
+          <h2 style={{ cursor: "pointer" }}>{metadata.site_title}</h2>
         </Link>
       </div>
     </header>
