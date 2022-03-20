@@ -2,7 +2,7 @@
 title: "私有化部署 RSSHub 服务" 
 date: "2022/03/20"
 excerpt: "本文主要介绍了如何私有化部署支持无头浏览器及代理的 RSSHub 服务。"
-keywords: "RSSHub,RSS,browerless"
+keywords: "RSSHub,RSS,Browserless"
 cover_image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3270&q=80"
 draft: "false"
 ---
@@ -135,11 +135,11 @@ volumes:
 在 RSSHub 中，如果检测到了代理设置，则会覆盖 node.js 原生 http 和 https 模块的 `get` 和 `request` 方法。
 覆盖后的 `get` 和 `request` 方法会根据 `PROXY_URL_REGEX` 匹配需要代理的请求，如果需要代理，则在请求时会使用由 [node-tunnel](https://github.com/koichik/node-tunnel) 实现的支持隧道代理的 Agent 进行请求。
 
-由于 `websocket` 是基于 HTTP 协议实现的，因此如果在使用代理的同时也配置了 `PUPPETEER_WS_ENDPOINT` 环境变量，为了避免通过代理连接 `browserless` 服务，则需要配置形如 `https?:\\/\\/(.*)(twitter|facebook|youtube|hitomi)(.*)\\.(.*)` 的 `PROXY_URL_REGEX` 变量。
+由于 `websocket` 是基于 HTTP 协议实现的，因此如果在使用代理的同时也配置了 `PUPPETEER_WS_ENDPOINT` 环境变量，为了避免通过代理连接 `Browserless` 服务，则需要配置形如 `https?:\\/\\/(.*)(twitter|facebook|youtube|hitomi)(.*)\\.(.*)` 的 `PROXY_URL_REGEX` 变量。
 
 ## 示例代码
 
-完整的代码可以从 [github]([ezirmusitua/deploy_private_rsshub (github.com)](https://github.com/ezirmusitua/deploy_private_rsshub)) 或 [gitee](https://gitee.com/ezirmusitua/deploy_private_rsshub) 获取。
+完整的代码可以从 [github](https://github.com/ezirmusitua/deploy_private_rsshub) 或 [gitee](https://gitee.com/ezirmusitua/deploy_private_rsshub) 获取。
 
 clone 代码后执行：
 
