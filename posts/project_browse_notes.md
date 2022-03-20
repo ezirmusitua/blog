@@ -8,7 +8,7 @@ keywords: 'animated webp,pkg,MacOS,Node.js'
 
 由于 MacOS 下的 preview 无法查看动态 webp 文件, 因此开发了 [browse](https://github.com/ezirmusitua/browse), 借助浏览器浏览这类文件.
 
-## 基本功能 
+## 基本功能
 
 这个工具的核心目标是实现图片浏览, 第一版本实现了以下功能:
 
@@ -26,7 +26,7 @@ keywords: 'animated webp,pkg,MacOS,Node.js'
 <img alt="C4 Modeling" src="/images/project_browse_notes/modeling.svg" style="object-fit: contain; object-position: center">
 </a>
 
-## 基本流程 
+## 基本流程
 
 1. 读取用户指定路径
 
