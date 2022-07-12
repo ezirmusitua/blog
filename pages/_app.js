@@ -29,6 +29,9 @@ function MyApp({ Component, pageProps }) {
       <main className='container'>
         <Component {...pageProps} />
       </main>
+      <footer>
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">沪ICP备2022003729号-1</a>
+      </footer>
     </>
   )
 }

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 p {
@@ -26,7 +26,7 @@ img {
 }
 
 header {
-  background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4); 
+  background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
   color: #ffffff;
   padding: 24px;
 }
@@ -115,4 +115,18 @@ ol {
   .posts {
     grid-template-columns: 1fr;
   }
+}
+
+footer {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 12px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer a {
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.56);
 }
