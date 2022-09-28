@@ -8,21 +8,16 @@ on:
 
 jobs:
 
-  build:
+  build_and_push:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build Docker Image
+    - name: Build And Push Docker Image
       run: |
         tag=$(date +%s)
         docker build . --file Dockerfile --tag blog:$tag
-    
-    - name: Login To TRC
-      run: docker login ccr.ccs.tencentyun.com --username=${{ secrets.TCR_USERNAME }} --password=${{ secrets.TCR_PASSWORD }}
-      
-    - name: Push To TRC
-      run: |
+        docker login ccr.ccs.tencentyun.com --username=${{ secrets.TCR_USERNAME }} --password=${{ secrets.TCR_PASSWORD }}
         docker tag blog:$tag ccr.ccs.tencentyun.com/ezirmusitua/blog:$tag
         docker push ccr.ccs.tencentyun.com/ezirmusitua/blog:$tag
