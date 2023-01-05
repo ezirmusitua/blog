@@ -4,9 +4,9 @@ export const sortByDate = (a, b) => {
   const invalid_prev = prev.toString() === "Invalid Date";
   const invalid_next = next.toString() === "Invalid Date";
   if (invalid_prev && invalid_next) {
-    return a.frontmatter.title.localeCompare(b.frontmatter.title)
+    return a.frontmatter.title.localeCompare(b.frontmatter.title);
   }
   if (invalid_prev) return 1;
   if (invalid_next) return -1;
   return next - prev;
-}
+};
