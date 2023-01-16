@@ -1,0 +1,20 @@
+@charset "utf-8";
+
+/* Custom css */
+pre {
+  padding: 0;
+  background: transparent;
+}
+
+.code-block .copy-btn {
+  display: none;
+}
+
+.code-block:hover .copy-btn {
+  display: block;
+}
+
+.toc-level {
+  margin-left: 1.5em !important;
+  margin-bottom: 0 !important;
+}

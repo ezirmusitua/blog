@@ -1,91 +1,27 @@
-# Blog
+# Next.js + Tailwind CSS Example
 
-## 开发环境要求
+This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
 
-安装 [Node.js 16](https://nodejs.org/en/download/), 推荐使用 [nvm](https://github.com/nvm-sh/nvm#git-install) 安装.
+## Deploy your own
 
-## 部署环境要求
+Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+
+## How to use
+
+Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
 
 ```bash
-apt update -y && apt install unzip docker.io nginx
-mkdir /src
-
-echo '
-server {
-        listen 80;
-        listen [::]:80;
-        # listen 443 ssl;
-        # listen [::]:443;
-        server_name <your_site>;
-        # ssl_certificate     /etc/ssl/certs/<your_site>_bundle.crt;
-        # ssl_certificate_key /etc/ssl/private/<your_site>.key;
-        # ssl_session_timeout 5m;
-        # ssl_protocols TLSv1.2 TLSv1.3; 
-        # ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE; 
-        # ssl_prefer_server_ciphers on;
-        location / {
-                proxy_pass http://localhost:3000;
-        }
-}
-' > /etc/nginx/sites-available/<your_site>
-
-sudo ln -sf /etc/nginx/sites-available/<your_site> /etc/nginx/sites-enabled/<your_site>
-nginx -t && nginx -s reload
+npx create-next-app --example with-tailwindcss with-tailwindcss-app
 ```
 
-## 项目结构
-
-```plain
-├── .dockerignore
-├── .eslintrc
-├── .gitignore
-├── .env
-├── .git_hooks
-│   ├── pre-commit
-│   └── pre-push
-├── .scripts
-│   ├── deploy.sh
-│   └── update_app.sh
-├── Dockerfile
-├── README.md
-├── components
-│   ├── Header.js
-│   └── Post.js
-├── next.config.js
-├── package-lock.json
-├── package.json
-├── pages
-│   ├── _app.js
-│   ├── blog
-│   └── index.js
-├── posts
-│   ├── **.md
-├── public
-│   ├── favicon.ico
-│   ├── images
-├── styles
-│   └── globals.css
-└── utils
-    └── index.js
+```bash
+yarn create next-app --example with-tailwindcss with-tailwindcss-app
 ```
 
-## HOW TO
+```bash
+pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+```
 
-### 初始化
-
-1. 在 `.env` 文件中调整基本站点数据
-
-2. 将 .git_hooks 中的钩子放置到 .git/hooks 中
-
-### 发布
-
-1. 将 `markdown` 文件保存到 posts 文件夹中
-
-2. 执行 `git add .`
-
-3. 执行 `git commit -m <msg>`(需要 lint 通过)
-
-4. 执行 `git push`(push 到远端之前会执行部署, 参见 `.scripts/deploy.sh`)
-
-<b style="color: red">仅在 macOS 上进行过测试. 手动发布查看 `.scripts/deploy.sh`</b>
-
+Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
