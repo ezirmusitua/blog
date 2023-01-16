@@ -1,18 +1,15 @@
 #!/usr/bin/bash
 
-while read line; do export $line; done < .env
+REMOTE=${1:-"qcloud.apple"}
 
-echo $DEPLOY_TARGET
+rsync -av \
+  --exclude=.vscode \
+  --exclude=node_modules \
+  --exclude=.git \
+  --exclude=.next \
+  --exclude=.vscode \
+  . \
+  $REMOTE:/src/blog
 
-mkdir app
+ssh -t $REMOTE < .scripts/start.sh
 
-rsync -r --exclude=.vscode --exclude=node_modules --exclude=app --exclude=.git --exclude=.next . app
-
-zip app.zip app -r
-
-scp app.zip $DEPLOY_TARGET:/src
-
-ssh -t $DEPLOY_TARGET < .scripts/update_app.sh
-
-rm app.zip
-rm -rf app
