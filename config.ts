@@ -16,22 +16,18 @@ class Config {
     return process.env.NEXT_PUBLIC_SITE_TITLE || "三水言己";
   }
 
-  resource(path: string) {
-    return `${process.env.NEXT_PUBLIC_RESOURCE_BASE}${path}`;
-  }
-
   get site_beian() {
     return process.env.NEXT_PUBLIC_SITE_BEIAN;
+  }
+
+  resource(path: string) {
+    return `${process.env.NEXT_PUBLIC_RESOURCE_BASE}${path}`;
   }
 }
 
 class ApiConfig {
   get resource_base() {
     return process.env.RESOURCE_BASE || "http://localhost:3000";
-  }
-
-  resource(path: string) {
-    return process.env.RESOURCE_BASE + path;
   }
 
   get setting() {
@@ -49,10 +45,6 @@ class ApiConfig {
     return process.env.POSTS_DIR || "";
   }
 
-  post(name: string) {
-    return path.join(this.post_dir, name);
-  }
-
   get database() {
     return {
       location: process.env.DATABASE_LOCATION || "db",
@@ -61,10 +53,27 @@ class ApiConfig {
       autoSave: process.env.DATABASE_AUTOSAVE === "true",
     };
   }
+
+  get comment() {
+    return {
+      host: process.env.COMMENT_HOST || "http://localhost:300",
+      site_id: process.env.COMMENT_SITE_ID || "ezirmusitua_blog--dev",
+      theme: "light",
+      components: ["embed"] as any,
+      enabled: process.env.COMMENT_ENABLED == "true",
+    };
+  }
+
+  resource(path: string) {
+    return process.env.RESOURCE_BASE + path;
+  }
+
+  post_file(name: string) {
+    return path.join(this.post_dir, name);
+  }
 }
 
 const config = new Config();
 
-export default config;
-
 export const api_config = new ApiConfig();
+export default config;

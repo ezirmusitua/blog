@@ -9,14 +9,17 @@ function Footer() {
       style={{ height: FooterHeight }}
     >
       <div className="flex flex-col items-center">
-        <a href="/" className="mb-1 text-xs leading-[48px] hover:underline border-b-0 cursor-pointer">
+        <a
+          href="/"
+          className="mb-1 border-b-0 cursor-pointer text-xs leading-[20px] hover:underline "
+        >
           {config.site_title}
         </a>
         <a
           href="https://beian.miit.gov.cn/"
           target="_blank"
           rel="noreferrer"
-          className="text-xs leading-[48px] hover:underline border-b-0 cursor-pointer"
+          className="border-b-0 cursor-pointer text-xs pt-[12px] pb-[24px] hover:underline "
         >
           {config.site_beian}
         </a>

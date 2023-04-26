@@ -1,0 +1,136 @@
+---
+title: '如何使用 GeoIP 获取访问 IP 的地理位置信息'
+date: '2023-04-22'
+excerpt: '本文介绍了如何使用 GeoIP 技术获取访问 IP 的地理位置信息，介绍了常见的 GeoIP 服务提供商、使用场景以及使用 MaxMind GeoLite2 数据库和 Web Service 的方法。'
+keywords: 'GeoIP, IP地址, 地理位置, MaxMind, GeoLite2, IPLocation'
+cover_image: 'https://images.unsplash.com/photo-1542120926-32f3559e9473?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
+Draft: 'false'
+---
+
+GeoIP 是一个 IP 地址定位库和技术，可以根据 IP 地址确定地理位置信息，例如国家、地区、城市、经纬度等。GeoIP 可以用于各种场景，例如：
+
+1. 地理定位服务：根据用户的 IP 地址确定其所在的地理位置，提供相应的服务，例如天气预报、本地化内容、地图导航等。
+
+2. 广告定向：根据用户的地理位置信息投放相关的广告，提高广告的精准度和效果。
+
+3. 网络安全：根据 IP 地址确定其所在的地理位置，识别异常的网络流量和攻击，提高网络安全性。
+
+4. 数据分析：根据用户的地理位置信息对数据进行分析，例如了解用户的地理分布、行为习惯等，为业务决策提供参考。
+
+需要注意的是，GeoIP 并不是 100% 准确的，尤其是在一些动态 IP 地址和代理服务器的情况下。此外，一些国家和地区可能会限制使用 GeoIP 来收集和处理用户数据，因此在使用 GeoIP 时需要遵守当地的法律法规。
+
+常见的 GeoIP 服务提供商有：[MaxMind](https://www.maxmind.com/en/home)、[IPLocation](https://www.iplocation.net/)。
+
+## 使用 IpLocation API ##
+
+IpLocation 是一个用于获取 IP 地理位置信息的工具。它可以通过 IP 地址确定其所在的国家、地区、城市、经纬度等信息。
+
+IpLocation 提供了免费的 API 用于查询特定 IP 的地理位置信息。你可以在命令行中使用以下命令进行尝试：
+
+```bash
+
+curl https://api.iplocation.net/?cmd=ip-country&ip=<ipaddress>
+
+```
+
+该请求的响应为：
+
+```json
+{
+  "ip": "<ipaddress>",
+  "ip_number": "2026660487",
+  "ip_version": 4,
+  "country_name": "China",
+  "country_code2": "CN",
+  "isp": "China Mobile Communications Corporation",
+  "response_code": "200",
+  "response_message": "OK"
+}
+```
+
+响应中包含了 IP 地址的详细信息，如所属国家、ISP（Internet Service Provider，网络服务提供商）等。
+
+## 使用 GeoLite2 ##
+
+MaxMind 的 GeoIP 服务是收费的，但是 MaxMind 还提供了一个免费版本的 GeoIP 数据库，名为 [GeoLite2](https://dev.maxmind.com/geoip/geolite2-free-geolocation-data)。用户可以在注册 GeoLite2 账户后，下载 GeoLite2 数据库文件或使用提供的 API 获取 IP 地理位置信息。需要注意的是，相比于付费版本，GeoLite2 数据库在精准度、更新频率等方面存在差异。
+
+使用 GeoLite2 有两种方法：一是通过下载 GeoLite2 提供的数据库文件，并使用官方提供的 SDK 进行查询；二是通过 GeoLite2 Web Service 进行查询，使用 HTTP 协议或 RESTful API 进行查询，返回结果与使用本地库文件相同。
+
+### 使用 GeoLite2 数据库 ###
+
+为了使用 GeoLite2，首先需要[注册 GeoLite2 账户](https://www.maxmind.com/en/geolite2/signup)，填写注册表单并通过邮件中的验证流程完成注册。
+
+下面这段代码展示了如何在 Node.js 中使用 GeoLite2 的 MMDB 数据库。
+
+首先安装依赖 `maxmind`，由于官方接口的更新，这里使用的是 1.x 的版本 SDK。
+
+```js
+// yarn add maxmind@1
+const maxmind = require('maxmind');
+const reader = maxmind.open('/path/to/GeoLite2-Country.mmdb');
+const result = reader.get(ip);
+console.log(`[INFO] location information: ${JSON.stringify(result, null, 2)}`);
+```
+
+注意，`/path/to/GeoLite2-Country.mmdb` 需要修改为实际的 MMDB 文件路径，或改为相对路径。代码执行后，result 对象包含了 IP 地址对应的地理位置信息，可以根据需要进行处理和使用。
+
+### 使用 MaxMind WebService ###
+
+除了可以通过 MMDB 获取地理位置信息，也可以使用 MaxMind 提供的 Web Service。在使用之前需要创建 [License Key](https://www.maxmind.com/en/accounts/current/license-key)，用于身份验证和访问控制的密钥。访问创建 License Key 的页面，在创建完成之后保存 user id 和 License Key（License Key 要记好，如果忘记的话需要重新生成）。
+
+下面我们将通过一个示例来演示如何使用 MaxMind Web Service 查询 IP 的地理位置信息。Web Service 的基本用法可以参考下面的例子：
+
+```bash
+curl https://geolite.info/geoip/v2.1/country/{ip—address} \
+-H "Authorization: Basic <base64-encoded-userpwd>"
+```
+
+请求 Web Service 可以得到下面的结果：
+
+```json
+{
+  "continent": {
+    "code":"AS",
+    "geoname_id":6255147,
+    "names":{
+      "zh-CN":"亚洲",
+      // ... 其他名称
+    }
+  },
+  "country": {
+    "iso_code":"CN",
+    "geoname_id":1814991,
+    "names":{
+      "zh-CN":"中国",
+      // ... 其他名称
+    }
+  },
+  "registered_country": {
+    "iso_code":"CN",
+    "geoname_id":1814991,
+    "names":{
+      "zh-CN":"中国",
+      // ... 其他名称
+    }
+  },
+  "traits": {
+    "ip\_address":"<ip\_address>",
+    "network":"<其他网络信息>"
+  }
+}
+```
+
+要注意的是请求中 Authorization 头的构造。MaxMind Web Service 使用的是 Basic Authorization，因此可以按照下面的方法进行构造：
+
+```js
+// 将前面得到的 user id 和 license key 使用":`"连接，然后进行 Base64 编码
+const encodedCredentials = btoa(`${user_id}:${license_key}`);
+// 构造 Authorization 头
+const header = `Authorization: Basic ${encodedCredentials}`;
+```
+
+在请求 Web Service 时，可以将构造好的 Authorization 头放入 HTTP 请求头中，即可获取 IP 地理位置信息。在响应结果中，`traits`对象包含典型的 IP Address 信息，例如所属网络 (network) 信息。
+
+## 代码示例 ##
+
+关于如何使用 GeoLite2 以及 IpLocation 获取 GeoIP 信息的详细代码，可以参考[这个例子](https://codesandbox.io/p/sandbox/geoip-in-nodejs-6wqop5)。

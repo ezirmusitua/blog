@@ -1,8 +1,8 @@
 import { Get } from "guards";
-import with_interceptors from "interceptors";
+import withInterceptors from "interceptors";
 import { tApiHandler, tApiRequest, tApiResponse } from "interface";
-import with_middlewares from "middlewares";
-import { get_post, list_post } from "services/post";
+import withMiddleware from "middleware";
+import { getPost, listPost } from "services/post";
 
 let handler: tApiHandler<any> = async (
   req: tApiRequest,
@@ -11,10 +11,10 @@ let handler: tApiHandler<any> = async (
   try {
     const { id } = req.query;
     if (!id) {
-      const posts = await list_post();
+      const posts = await listPost();
       return res.status(200).json({ posts });
     } else {
-      const post = await get_post(id + "");
+      const post = await getPost(id + "");
       return res.status(200).json({ post });
     }
   } catch (e: any) {
@@ -23,8 +23,8 @@ let handler: tApiHandler<any> = async (
   }
 };
 
-handler = with_interceptors(handler);
-handler = with_middlewares(handler);
+handler = withInterceptors(handler);
+handler = withMiddleware(handler);
 handler = Get(handler);
 
 export default handler;

@@ -1,5 +1,5 @@
 import { DefaultMeta } from "app/head";
-import { get_post } from "services/post";
+import { getPost } from "services/post";
 import config from "config";
 
 interface iProps {
@@ -7,7 +7,7 @@ interface iProps {
 }
 
 async function PostHead({ params: { id } }: iProps) {
-  const post = await get_post(id);
+  const post = await getPost(id);
   return (
     <head>
       <title>{`${post.frontmatter.title} - ${config.site_title}`}</title>

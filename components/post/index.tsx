@@ -1,7 +1,8 @@
+import Comments from "./components/Comments";
 import PostContent from "./components/Content";
 import PostCover from "./components/Cover";
-import { iPost } from "./interface";
 import "./index.css";
+import { iPost } from "./interface";
 
 async function Post({ post }: { post: iPost }) {
   return (
@@ -12,6 +13,7 @@ async function Post({ post }: { post: iPost }) {
           <PostContent post={post}></PostContent>
         </div>
       </div>
+      <Comments></Comments>
     </main>
   );
 }
