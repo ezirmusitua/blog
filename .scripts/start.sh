@@ -2,25 +2,24 @@
 
 set -x
 sudo ln -sf \
-  /src/blog/.artifacts/configs/ezirmusitua.site_bundle.crt \
+  /src/blog/.artifacts/certs/ezirmusitua.site_bundle.crt \
   /etc/ssl/certs/ezirmusitua.site_bundle.crt
 
 sudo ln -sf \
-  /src/blog/.artifacts/configs/ezirmusitua.site.key \
+  /src/blog/.artifacts/certs/ezirmusitua.site.key \
   /etc/ssl/private/ezirmusitua.site.key
 
 sudo ln -sf \
-  /src/blog/.artifacts/configs/ezirmusitua.site \
+  /src/blog/.artifacts/nginx/ezirmusitua.site \
   /etc/nginx/sites-enabled/ezirmusitua.site
 set +x
 
 pushd /src/blog
-  docker build . -t ezirmusitua_blog
-  docker stop blog
-  docker rm blog
-  docker run -p 3000:3000 -d --name blog ezirmusitua_blog
+  nerdctl build . -t ezirmusitua_blog
+  nerdctl stop blog && nerdctl rm blog
+  nerdctl run -p 3000:3000 -d --name blog ezirmusitua_blog
   sleep 3
-  docker logs blog
-  nginx -s reload
+  nerdctl logs blog
+  nginx -t && nginx -s reload
 popd
 

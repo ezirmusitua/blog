@@ -1,7 +1,7 @@
 import { Get } from "guards";
-import with_interceptors from "interceptors";
+import withInterceptors from "interceptors";
 import { tApiHandler, tApiRequest, tApiResponse } from "interface";
-import with_middlewares from "middlewares";
+import withMiddleware from "middleware";
 import { sLog } from "schema";
 
 let handler: tApiHandler<any> = async (
@@ -12,9 +12,9 @@ let handler: tApiHandler<any> = async (
   const logs = await log_repo.find({});
   res.status(200).json({ logs });
 };
-handler = with_interceptors(handler);
-handler = with_middlewares(handler);
+
+handler = withInterceptors(handler);
+handler = withMiddleware(handler);
 handler = Get(handler);
 
 export default handler;
-
