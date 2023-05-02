@@ -1,0 +1,291 @@
+---
+title: '如何部署一个支持关键词过滤的评论服务'
+date: '2023-05-02'
+excerpt: '本文介绍了一个功能全面的评论系统 Remark42，包含内置多种登录方式、完善的评论功能、数据导入和导出、提供多种通知方式、快捷的部署和集成以及用户界面等特点。此外还介绍了如何使用容器化部署 Remark42 服务、启用邮件通知、管理评论以及拓展评论服务。'
+keywords: 'Remark42, 评论系统, 开源, 容器化部署, SendGrid, 评论审核'
+cover_image: 'https://images.unsplash.com/photo-1478012237172-93bd483bb540?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
+Draft: 'false'
+---
+
+## Remark42 是什么？ ##
+
+[Remark42](https://github.com/umputun/remark42) 是一个开源的轻量级评论系统，支持自主托管。具有以下这些特性：
+
+内置多种登录方式：
+  - 社交账号登录（Google、Twitter、Facebook、Microsoft、GitHub、Yandex、Patreon、Telegram）；
+  - 邮件登录；
+  - 匿名访问。
+
+完善的评论功能：
+  - 多级嵌套评论，支持树形和平面两种展示方式；
+  - 投票、置顶和验证系统；
+  - 可排序评论；
+  - 支持 Markdown 语法。
+  - 管理员可以删除评论和屏蔽用户；
+  - 支持拖放上传图片。
+
+支持数据导入和导出：
+  - 从 Disqus 和 WordPress 导入评论；
+  - 可将数据导出为 JSON 格式，并自动备份。
+
+提供多种通知方式：
+  - 管理员可通过 Telegram、Slack、Webhook 和电子邮件接收通知（当有新评论时发送通知）；
+  - 用户可通过电子邮件和 Telegram 接收通知（当有人回复您的评论时即可收到通知）。
+
+快捷的部署和集成
+  - 所有数据都保存在一个数据文件中，不需要依赖外部数据库；
+  - 支持容器化部署；
+  - 提供可以直接在 Linux、Windows 以及 macOS 上运行的可执行文件；
+  - 集成自动 SSL 工具（[nginx-le](https://github.com/nginx-le/nginx-le)）。
+
+用户界面：
+  - 简洁轻量并且支持自定义的用户界面，内置明暗两种主题；
+
+其他功能：
+  - 用于获取最新评论、跨文章评论的提取器；
+  - 可以针对单个评论或文章获取 RSS 订阅；
+  - 单个 Remark42 服务实例可为不同的站点提供评论系统；
+  - 注重用户隐私。
+
+
+## 部署 Remark42 ##
+
+Remark42 可以很容易地部署到自己的网站上。下面介绍如何使用容器化的方式进行 Remark42 服务的部署。在部署 Remark42 服务前，应该在域名的 DNS 控制台为其准备一个域名，并将该域名解析到部署 Remark42 服务的服务器的 IP 地址上。
+
+使用容器化部署 Remark42 服务，最需要注意的是要正确设置使用的环境变量，以开启相应的功能。比如下面这个 `docker-compose.yaml` 配置可以部署一个允许用户使用 `GitHub` 账号登录以及使用匿名身份登录、并且支持邮件通知的 Remark42 服务。
+
+```yaml filename="docker-compose.yaml"
+version: "3.2"
+
+services:
+  comment:
+    image: umputun/remark42:latest
+    container_name: "comment"
+    hostname: "comment"
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+    environment:
+      - ADMIN_PASSWD=password                          # 管理员密码
+      - ADMIN_SHARED_ID=shared_id                      # 管理员 ID，登录后获取
+      - ADMIN_SHARED_EMAIL=admin@example.com           # 管理员邮箱，用于接收通知
+      - ALLOWED_HOSTS=example.com                      # 允许使用的域名
+      - AUTH_ANON=true                                 # 是否支持匿名用户
+      - AUTH_EMAIL_FROM=notify@example.com             # 发送用户认证邮件的邮箱
+      - AUTH_GITHUB_CID=github_id                      # Github 应用 ID
+      - AUTH_GITHUB_CSEC=gichub_secret                 # Github 应用 Secret
+      - DEBUG=true                                     # 调试模式
+      - NOTIFY_ADMINS=email                            # 通知方式
+      - NOTIFY_EMAIL_FROM=notify@example.com           # 发送用户认证邮件的邮箱
+      - REMARK_URL=https://remark42.example.com        # Remark42 服务 url
+      - SECRET=secret                                  # Remark42 secret
+      - SITE=site_id                                   # Remark42 site id
+      - SMTP_HOST=smtp.sendgrid.net                    # SMTP 服务器（SendGrid）
+      - SMTP_PORT=465                                  # SMTP 端口（SendGrid）
+      - SMTP_TLS=true                                  # SMTP 启用 TLS
+      - SMTP_USERNAME=apikey                           # SMTP 用户名（SendGrid 直接使用 "apikey"）
+      - SMTP_PASSWORD=password                         # SMPT 密码（SendGrid 使用 apikey）
+
+    ports:
+      - "8081:8080"                                   
+
+    volumes:
+      - /src/comment/.data:/srv/var
+```
+
+如果需要支持其他登录方式，需要配置对应的 AUTH_** 环境变量，具体参数可以参考[官方文档](https://remark42.com/docs/configuration/authorization/)。此外，Remark42 还支持通过 [Slack、Webhook](https://remark42.com/docs/configuration/notifications/) 或 [Telegram](https://remark42.com/docs/configuration/telegram/) 进行消息通知。
+
+部署完成后，可以使用以下命令验证 Remark42 服务是否成功部署。请将 https://comment.example.com 替换为 Remark42 服务部署的域名，并将 \<site_id\> 替换为在 Remark42 中设置的站点 ID 。
+
+```bash
+curl https://comment.example.com/api/v1/config\?site\=<site_id> | jq .version
+# 输出类似如下格式的字符串表示部署成功：
+## backend-8357846-20230122T14:59:22
+```
+
+为了嵌入 Remark42 评论系统到站点中，需要在前端添加以下 [HTML 代码](remark42.com/docs/getting-started/installation/)：
+
+```html filename="blog.html"
+<!-- 评论组件挂载点 -->
+<div id="remark42"></div>
+<script>
+  var remark_config = {
+    host: 'REMARK_URL',
+    site_id: 'YOUR_SITE_ID',
+  }
+</script>
+<script>
+!function(e,n){for(var o=0;o<e.length;o++){var r=n.createElement("script"),c=".js",d=n.head||n.body;"noModule"in r?(r.type="module",c=".mjs"):r.async=!0,r.defer=!0,r.src=remark_config.host+"/web/"+e[o]+c,d.appendChild(r)}}(remark_config.components||["embed"],document);
+</script>
+```
+请将 https://comment.example.com 替换为 Remark42 服务部署的域名，YOUR_SITE_ID 替换为在 Remark42 中设置的站点 ID。
+对于使用 React 实现的站点，可以参考这个[组件](https://codesandbox.io/p/sandbox/react-remark42-wm7zuc)。
+
+## 配置邮件通知 ##
+
+如果希望使用邮件通知，需要先选择一个邮件服务商。在 Remark42 中已经提供了对 Mailgun 和 SendGrid 的直接支持。SendGrid 的免费套餐支持每日发送 100 封的邮件，已经足够日常使用，因此下面的内容以 SendGrid 为主。
+
+首先需要注册一个 [SendGrid](https://signup.sendgrid.com/) 账号。完成注册后认证一个[发送邮箱](https://app.sendgrid.com/settings/sender_auth/senders/new)。输入相关信息后再在收到的邮件中点击链接完成剩余步骤。创建完发送邮箱后按照下面的步骤为评论服务创建一个 `api key`：
+
+1. 点击左侧导航栏的 `Email API`/`Integration Guide`；
+2. 选择 `SMTP Relay`；
+3. 输入 API Key 名称，点击 `Create Key`，保存生成的 `api key`。
+
+修改 `docker-compose.yaml` 文件，设置以下环境变量：
+
+```yaml filename="docker-compose.yaml"
+  environments:
+      - ADMIN_SHARED_EMAIL=admin@example.com # 通知邮件将发送到这个邮箱
+      - NOTIFY_ADMINS=email
+      - NOTIFY_EMAIL_FROM=notify@example.com # 认证过的发送邮箱，和 `ADMIN_SHARED_EMAIL` 可以相同
+      - SMTP_HOST=smtp.sendgrid.net
+      - SMTP_PORT=465
+      - SMTP_TLS=true
+      - SMTP_USERNAME=apikey                 # 不需要修改
+      - SMTP_PASSWORD=<secret_from_sendgrid> # 填写刚才创建的 `api key`
+```
+
+完成配置之后，需要重启 Remark42 服务，并添加评论，以验证是否能够成功收到电子邮件通知。如果没有收到邮件，可以检查一下垃圾邮件文件夹，确认邮件是否被误判为垃圾邮件。
+
+## 评论管理 ##
+
+在 Remark42 中，可以通过设置环境变量 'ADMIN_SHARED_ID' 来指定一个管理员账号。将此账号用于登录评论系统可以执行管理员操作，包括针对单个 URL 禁用评论、删除用户评论、永久/临时禁用用户。
+
+获取 ADMIN_SHARED_ID 的方法如下：
+
+1. 访问挂载了评论系统的站点，并通过任意一种非匿名的标准登录方式登录到评论系统；
+2. 使用开发者工具查找 /api/v1/user?site= API，响应中的 id 字段即为管理员账号的 ID。
+
+除了可以使用管理员界面管理评论，Remark42 还提供了一些 [API 接口](https://remark42.com/docs/contributing/api/)，可以通过使用这些 API 来拓展评论服务。例如，以下代码将每隔一分钟自动审核评论，如果评论中包含预设的关键词，就会将这些评论删除。这段代码中用到了下面这三个 API 接口：
+
+1. `GET /api/v1/list?site=site-id&limit=5&skip=2` 用于获取包含评论的文章链接
+2. `GET /api/v1/find?site=site-id&url=post-url&sort=fld&format=tree|plain` 用于获取特定链接下的评论
+3. `DELETE /api/v1/admin/comment/{id}?site=site-id&url=post-url` 删除特定的评论。这个接口只有 admin 用户可以调用，因此需要设置 `ADMIN_PASSWD` 环境变量，并在请求时添加 `Basic Authorization` 头。
+
+整个代码可以分为以下几个部分：
+
+1. 引入所需的模块，包括文件系统模块、node-cron 模块和 HTTP/HTTPS 模块。
+2. 定义常量以及读取环境变量，例如词汇存储文件、博客评论 API 地址、博客站点 ID、评论审核管理员账号和密码等。
+3. 实现工具函数，其中 `basicAuthorizationHeader` 用于生成 HTTP 基础认证的请求头、`request` 方法用于发起 API 请求。
+4. 为了实现自动审核的功能，需要使用 `listPostUrls` 获取所有包含评论的文章的 URL 地址；使用 `listActiveComments` 用于获取一篇文章中所有可见的评论；使用`deleteComments`  删除评论。
+5. `audit` 方法的作用是组合上述三个函数，删除那些包含了关键词的评论。
+6. 最后在 `main` 函数中使用 `cron` 库每分钟执行一次 `audit` 函数。
+
+```js filename="filter/index.js"
+const fs = require("fs");
+const cron = require("node-cron");
+const https = require("https");
+const http = require("http");
+
+const WORDS_FILE = process.env.WORDS_FILE;
+const REMARK_URL = process.env.REMARK_URL;
+const SITE_ID = process.env.SITE_ID;
+const REMARK_ADMIN = {
+  user: process.env.REMARK_ADMIN_USER,
+  pwd: process.env.REMARK_ADMIN_PWD,
+};
+
+const Words = JSON.parse(fs.readFileSync(WORDS_FILE).toString());
+
+function basicAuthorizationHeader(user, pwd) {
+  const credentials = btoa(`${user}:${pwd}`);
+  return { Authorization: `Basic ${credentials}` };
+}
+
+function request(url, options) {
+  const _request = url.startsWith("https") ? https.request : http.request;
+  return new Promise((resolve, reject) => {
+    const req = _request(url, options, (res) => {
+      let data = "";
+      res.on("data", (chunk) => (data += chunk));
+      res.on("end", resolve);
+    }).on("error", reject);
+    req.end();
+  });
+}
+
+async function getJSON(url) {
+  const data = await request(url, { method: "GET" });
+  return JSON.parse(data);
+}
+
+function del(url, headers) {
+  const options = { method: "DELETE", headers };
+  return request(url, options);
+}
+
+async function listPostUrls() {
+  const data = await getJSON(`${REMARK_URL}/api/v1/list?site=${SITE_ID}`);
+  return data.filter((p) => p.count).map((p) => p.url);
+}
+
+async function listActiveComments(post_url) {
+  const url = `${REMARK_URL}/api/v1/find?${new URLSearchParams({
+    site: SITE_ID,
+    url: post_url,
+    format: "plain",
+  })}`;
+  const { comments } = await getJSON(url);
+  return comments
+    .filter((c) => !c.delete)
+    .map((c) => ({
+      id: c.id,
+      content: c.text,
+      url: c.locator.url,
+    }));
+}
+
+async function deleteComments(comments) {
+  const authorization = basicAuthorizationHeader(
+    REMARK_ADMIN.user,
+    REMARK_ADMIN.pwd
+  );
+  await Promise.all(
+    comments.map(async (comment) => {
+      const url = `${REMARK_URL}/api/v1/admin/comment/${
+        comment.id
+      }?${new URLSearchParams({ site: SITE_ID, url: comment.url })}`;
+      const data = await del(url, { ...authorization });
+      if (data.trim() == "Unauthorized") throw Error("Unauthorized");
+      return data;
+    })
+  );
+}
+
+async function audit() {
+  console.log("=".repeat(30));
+  console.log("[INFO] start auditing comments");
+  try {
+    const urls = await listPostUrls();
+    let candidates = [];
+    for await (const url of urls) {
+      const comments = await listActiveComments(url);
+      console.log(`[INFO] \t${url} comment count ${comments.length}`);
+      candidates.push(...comments);
+    }
+    candidates = candidates.filter((c) =>
+      Words.some((w) => new RegExp(w, "gi").test(c.content))
+    );
+    await deleteComments(candidates);
+    console.log(`[INFO] \tremoved count ${candidates.length}`);
+  } catch (e) {
+    console.log("[ERROR] \tfilter failed -> ", e.message);
+  }
+  console.log("[INFO] done");
+  console.log("=".repeat(30));
+}
+
+function main() {
+  cron.schedule("* * * * *", () => {
+    audit();
+  });
+}
+
+main();
+```
+
+一个包含了定时审核功能的部署示例可以参考这个[仓库](https://github.com/ezirmusitua/remark42)中的代码。
