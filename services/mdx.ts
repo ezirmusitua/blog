@@ -2,6 +2,7 @@ import * as fs from "fs/promises";
 import matter from "gray-matter";
 import lisp from "highlight.js/lib/languages/lisp";
 import nginx from "highlight.js/lib/languages/nginx";
+import yaml from "highlight.js/lib/languages/yaml";
 import { serialize } from "next-mdx-remote/serialize";
 import rehype_highlight from "rehype-highlight";
 import remark_gfm from "remark-gfm";
@@ -43,7 +44,17 @@ export async function serialize_mdx<F>(fp: string) {
     mdxOptions: {
       remarkPlugins: [remark_gfm],
       rehypePlugins: [
-        [rehype_highlight, { languages: { lisp, nginx } }],
+        [
+          rehype_highlight,
+          {
+            languages: {
+              lisp,
+              nginx,
+              yaml,
+              yml: yaml
+            },
+          },
+        ],
         rehype_meta_as_attrs,
         rehype_slug,
         rehype_toc,
