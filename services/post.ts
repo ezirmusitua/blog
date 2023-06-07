@@ -80,8 +80,8 @@ export async function generateFeed(type: "rss" | "atom" | "json") {
       link: `${site_url}/blog/${post.id}`,
       description: post.excerpt,
       date: new Date(post.date),
-      author: Author,
-      image: post.cover || "",
+      author: [Author],
+      image: post.cover_image || "",
     });
   });
   switch (type) {
