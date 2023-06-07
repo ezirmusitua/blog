@@ -1,3 +1,4 @@
+import { Feed } from "feed";
 import { iPost } from "components/post/interface";
 import dayjs from "dayjs";
 import * as fs from "fs/promises";
@@ -43,4 +44,52 @@ export async function listPost(): Promise<iPostMeta[]> {
 export async function getPost(id: string): Promise<iPost> {
   const fp = api_config.post_file(id_to_name(id));
   return serialize_mdx<iFrontMatter>(fp);
+}
+
+const Author = {
+  name: "ezirmusitua",
+  email: "jferroal@gmail.com",
+  link: "https://ezirmusitua.site",
+};
+
+export async function generateFeed(type: "rss" | "atom" | "json") {
+  const posts = await listPost();
+  const site_url = "https://ezirmusitua.site";
+
+  const feed = new Feed({
+    title: "三水言己",
+    description: "三水言己",
+    id: site_url,
+    link: site_url,
+    image: `${site_url}/logo.png`,
+    favicon: `${site_url}/favicon.png`,
+    copyright: "三水言己",
+    generator: "https://github.com/jpmonette/feed",
+    feedLinks: {
+      rss2: `${site_url}/rss.xml`,
+      atom1: `${site_url}/atom.xml`,
+      json1: `${site_url}/rss.json`,
+    },
+    author: Author,
+  });
+
+  posts.forEach((post) => {
+    feed.addItem({
+      title: post.title,
+      id: `${site_url}/blog/${post.id}`,
+      link: `${site_url}/blog/${post.id}`,
+      description: post.excerpt,
+      date: new Date(post.date),
+      author: Author,
+      image: post.cover || "",
+    });
+  });
+  switch (type) {
+    case "rss":
+      return feed.rss2();
+    case "atom":
+      return feed.atom1();
+    case "json":
+      return feed.json1();
+  }
 }
