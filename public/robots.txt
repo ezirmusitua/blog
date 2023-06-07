@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /comment.ezirmusitua.site/
+Disallow: /api/v1/admin/comment/
+Disallow: /blog/.artifacts/proxy.yaml:/root/.config/clash/config.yaml
+Disallow: /api/v1/list?site=
+Disallow: /web/
+Disallow: /api/v1/find
+Disallow: /blog/remark42.com/docs/getting-started/installation/
+Disallow: /blog/config.yaml:/root/.config/clash/config.yaml
+Disallow: /path/to/zettelkasten/dir
+Disallow: /path/to/GeoLite2-Country.mmdb
