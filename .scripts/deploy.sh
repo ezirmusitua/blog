@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 REMOTE=${1:-"qcloud.apple"}
+APP=${2:-"blog"}
 
 rsync -av --delete \
   --exclude=.vscode \
@@ -12,5 +13,5 @@ rsync -av --delete \
   . \
   $REMOTE:/src/blog
 
-ssh -t $REMOTE < .scripts/start.sh
+ssh -t $REMOTE "cd /src/blog && bash .scripts/start.sh ${APP}"
 

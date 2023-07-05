@@ -1,32 +1,33 @@
-FROM node:16
-
-# ENV NEXT_PUBLIC_RESOURCE_BASE=https://ezirmusitua.site \
-#     NEXT_PUBLIC_SITE_TITLE=三水言己 \
-#     NEXT_PUBLIC_SITE_BEIAN=沪ICP备2022003729号-1 \
-#     DATABASE_LOCATION=/data/sample \
-#     DATABASE_USE_LOCAL_FORAGE=true \
-#     DATABASE_SYNCHRONIZE=false \
-#     DATABASE_AUTOSAVE=true \
-#     POSTS_DIR=/app/posts \
-#     RESOURCE_BASE=https://ezirmusitua.site
+FROM node:16 AS builder
 
 WORKDIR /app
 
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
-RUN npm config set registry https://registry.npmmirror.com/ && \
-  npm config set sharp_binary_host https://npmmirror.com//mirrors/sharp && \
-  npm config set sharp_libvips_binary_host https://npmmirror.com//mirrors/sharp-libvips && \
-  npm install
+RUN --mount=type=cache,target=/app/node_modules,id=app_node_modules,sharing=locked \
+    --mount=type=cache,target=/root/.npm,id=npm_cache \
+    yarn --registry=https://registry.npmmirror.com
 
 COPY . .
 COPY .artifacts/.env .env.local
 
-RUN npm run build
+RUN --mount=type=cache,target=/app/node_modules,id=app_node_modules,sharing=locked \
+    yarn build
+
+FROM node:16-alpine AS server
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+WORKDIR /app
+
+RUN yarn config set sharp_binary_host https://npmmirror.com/mirrors/sharp && \
+  yarn config set sharp_libvips_binary_host https://npmmirror.com/mirrors/sharp-libvips && \
+  yarn add sharp
+
+RUN --mount=type=cache,target=/tmp/dist,from=builder,source=/app/.next \
+    cp -r /tmp/dist/standalone/. /app
+
+CMD ["node", "server.js"]
 
 
