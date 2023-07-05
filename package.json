@@ -3,9 +3,9 @@
   "scripts": {
     "dev": "next dev --port 3002",
     "lint": "next lint",
-    "build": "next build",
+    "build": "bash .scripts/build_standalone.sh",
     "start": "next start",
-    "deploy": "bash .scripts/deploy.sh"
+    "deploy": "bash .scripts/deploy.sh qcloud.apple blog"
   },
   "dependencies": {
     "@headlessui/react": "^1",
