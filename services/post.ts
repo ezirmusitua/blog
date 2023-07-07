@@ -7,11 +7,11 @@ import { iFrontMatter } from "schema/post";
 import { api_config } from "../config";
 import { parse_frontmatter, serialize_mdx } from "./mdx";
 
-function id_from_name(p: string) {
+function idFromName(p: string) {
   return path.basename(p).replace(path.extname(p), "");
 }
 
-function id_to_name(id: string) {
+function idToName(id: string) {
   return `${decodeURIComponent(id)}.mdx`;
 }
 
@@ -26,7 +26,7 @@ export async function listPost(): Promise<iPostMeta[]> {
     posts.map(async (p) => {
       const fp = api_config.post_file(p);
       const frontmatter = await parse_frontmatter(fp);
-      return { id: id_from_name(p), ...frontmatter } as iPostMeta;
+      return { id: idFromName(p), ...frontmatter } as iPostMeta;
     })
   );
   const sorted = posts_data
@@ -42,7 +42,7 @@ export async function listPost(): Promise<iPostMeta[]> {
 }
 
 export async function getPost(id: string): Promise<iPost> {
-  const fp = api_config.post_file(id_to_name(id));
+  const fp = api_config.post_file(idToName(id));
   return serialize_mdx<iFrontMatter>(fp);
 }
 
