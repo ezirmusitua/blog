@@ -21,7 +21,7 @@ function Footer() {
           <Link href="/rss.xml" className="border-b-0">
             <Image
               alt="订阅 https://ezirmusitua.site 的 RSS 链接"
-              src="/assets/icons/icon_rss.png"
+              src="/icons/icon_rss.png"
               width={14}
               height={14}
             ></Image>

@@ -39,7 +39,7 @@ function Heading({ level, children, ...props }: iProps) {
       <div className="relative pl-10">
         <div className={icon_className}>
           <Image
-            src="/assets/icons/hashtag.svg"
+            src="/icons/hashtag.svg"
             width={icon_size}
             height={icon_size}
             alt="heading"

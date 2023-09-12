@@ -33,7 +33,7 @@ function TOC(props: iProps) {
       >
         <Image
           alt="toggle toc"
-          src="/assets/icons/list-bullet.svg"
+          src="/icons/list-bullet.svg"
           height={24}
           width={24}
         ></Image>

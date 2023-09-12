@@ -22,13 +22,13 @@ function Social({
 const socials = [
   {
     href: "https://github.com/ezirmusitua",
-    icon: "/assets/icons/github.svg",
+    icon: "/icons/github.svg",
     alt: "ezirmusitua | Github",
     size: 24,
   },
   {
     href: "mailto:jferroal@gmail.com",
-    icon: "/assets/icons/envelope.svg",
+    icon: "/icons/envelope.svg",
     alt: "jferroal@gmail.com",
     size: 24,
   },

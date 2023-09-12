@@ -3,6 +3,7 @@ import matter from "gray-matter";
 import lisp from "highlight.js/lib/languages/lisp";
 import nginx from "highlight.js/lib/languages/nginx";
 import yaml from "highlight.js/lib/languages/yaml";
+import dockerfile from "highlight.js/lib/languages/dockerfile";
 import { serialize } from "next-mdx-remote/serialize";
 import rehype_highlight from "rehype-highlight";
 import remark_gfm from "remark-gfm";
@@ -51,7 +52,8 @@ export async function serialize_mdx<F>(fp: string) {
               lisp,
               nginx,
               yaml,
-              yml: yaml
+              yml: yaml,
+              dockerfile,
             },
           },
         ],
