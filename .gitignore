@@ -39,8 +39,5 @@ data/
 .vim
 .artifacts
 posts
-**.key
-*.key
-*.key
-*.key
+public/assets
 *.key
