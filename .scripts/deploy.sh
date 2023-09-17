@@ -3,10 +3,9 @@
 REMOTE=${1:-"qcloud.apple"}
 APP=${2:-"blog"}
 
-rsync -av --delete \
+rsync -avL --delete \
   --exclude=.vscode \
   --exclude=node_modules \
-  --exclude=posts \
   --exclude=.git \
   --exclude=.next \
   --exclude=.vscode \
