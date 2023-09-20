@@ -27,7 +27,12 @@ function ArticleJsonLD({ metadata, extra = {} }: iProps) {
     null,
     2
   );
-  return <script type="application/ld+json">{content}</script>;
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: content }}
+    ></script>
+  );
 }
 
 export default ArticleJsonLD;
