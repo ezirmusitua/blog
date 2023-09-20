@@ -1,6 +1,7 @@
 import { DefaultMeta } from "app/head";
 import { getPost } from "services/post";
 import config from "config";
+import ArticleJsonLD from "components/ArticleJsonLD";
 
 interface iProps {
   params: { id: string };
@@ -21,6 +22,7 @@ async function PostHead({ params: { id } }: iProps) {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css"
       ></link>
+      <ArticleJsonLD metadata={post.frontmatter}></ArticleJsonLD>
     </head>
   );
 }
