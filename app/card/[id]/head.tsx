@@ -10,11 +10,12 @@ interface iProps {
 async function CardHead({ params: { id } }: iProps) {
   const post = await getMdx(api_config.cards_dir, id);
   const frontmatter = { ...post.frontmatter };
+  let { links, commands } = frontmatter;
   if (frontmatter.links) {
-    frontmatter.links = JSON.parse(frontmatter.links as string);
+    links = JSON.parse(frontmatter.links as string);
   }
   if (frontmatter.commands) {
-    frontmatter.commands = JSON.parse(frontmatter.commands as string);
+    commands = JSON.parse(frontmatter.commands as string);
   }
 
   return (
@@ -30,7 +31,10 @@ async function CardHead({ params: { id } }: iProps) {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/github.min.css"
       ></link>
-      <ArticleJsonLD metadata={post.frontmatter}></ArticleJsonLD>
+      <ArticleJsonLD
+        metadata={post.frontmatter}
+        extra={{ links, commands }}
+      ></ArticleJsonLD>
     </head>
   );
 }
