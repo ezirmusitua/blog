@@ -1,11 +1,11 @@
-import { Feed } from "feed";
 import { iPost } from "components/post/interface";
 import dayjs from "dayjs";
-import * as fs from "fs/promises";
-import * as path from "path";
+import { Feed } from "feed";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
 import { iFrontMatter } from "schema/post";
 import { api_config } from "../config";
-import { parse_frontmatter, serialize_mdx } from "./mdx";
+import { parseFrontmatter, serialize_mdx } from "./mdx";
 
 function idFromName(p: string) {
   return path.basename(p).replace(path.extname(p), "");
@@ -15,21 +15,21 @@ function idToName(id: string) {
   return `${decodeURIComponent(id)}.mdx`;
 }
 
-interface iPostMeta extends iFrontMatter {
+interface iMdxMeta extends iFrontMatter {
   id: string;
 }
 
-export async function listPost(): Promise<iPostMeta[]> {
-  let posts: string[] = await fs.readdir(api_config.post_dir);
-  posts = posts.filter((f) => f.endsWith(".mdx"));
-  const posts_data: iPostMeta[] = await Promise.all(
-    posts.map(async (p) => {
-      const fp = api_config.post_file(p);
-      const frontmatter = await parse_frontmatter(fp);
-      return { id: idFromName(p), ...frontmatter } as iPostMeta;
+export async function listMdx(dir: string): Promise<iMdxMeta[]> {
+  let files: string[] = await fs.readdir(dir);
+  files = files.filter((f) => f.endsWith(".mdx"));
+  const files_data: iMdxMeta[] = await Promise.all(
+    files.map(async (p) => {
+      const fp = path.join(dir, p);
+      const frontmatter = await parseFrontmatter(fp);
+      return { id: idFromName(p), ...frontmatter } as iMdxMeta;
     })
   );
-  const sorted = posts_data
+  const sorted = files_data
     .sort((p, n) => {
       const previous_date: dayjs.Dayjs = dayjs(p.date);
       const next_date = dayjs(n.date);
@@ -41,8 +41,8 @@ export async function listPost(): Promise<iPostMeta[]> {
   return sorted;
 }
 
-export async function getPost(id: string): Promise<iPost> {
-  const fp = api_config.post_file(idToName(id));
+export async function getMdx(dir: string, id: string): Promise<iPost> {
+  const fp = path.join(dir, idToName(id));
   return serialize_mdx<iFrontMatter>(fp);
 }
 
@@ -53,7 +53,7 @@ const Author = {
 };
 
 export async function generateFeed(type: "rss" | "atom" | "json") {
-  const posts = await listPost();
+  const posts = await listMdx(api_config.post_dir);
   const site_url = "https://ezirmusitua.site";
 
   const feed = new Feed({

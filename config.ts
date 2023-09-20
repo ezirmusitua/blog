@@ -45,6 +45,10 @@ class ApiConfig {
     return process.env.POSTS_DIR || "";
   }
 
+  get card_dir() {
+    return process.env.CARDS_DIR || "";
+  }
+
   get database() {
     return {
       location: process.env.DATABASE_LOCATION || "db",

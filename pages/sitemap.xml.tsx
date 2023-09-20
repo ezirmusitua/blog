@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { listPost } from "services/post";
+import { listMdx } from "services/post";
 
 //pages/sitemap.xml.js
 const EXTERNAL_DATA_URL = "https://ezirmusitua.site/blog";
@@ -26,7 +26,7 @@ function generateSiteMap(posts: Array<{ id: string }>) {
 function SiteMap() {}
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const posts = await listPost();
+  const posts = await listMdx();
   const sitemap = generateSiteMap(posts);
   res.setHeader("Content-Type", "text/xml");
   res.write(sitemap);

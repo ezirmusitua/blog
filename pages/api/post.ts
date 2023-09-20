@@ -1,8 +1,9 @@
+import { api_config } from "config";
 import { Get } from "guards";
 import withInterceptors from "interceptors";
 import { tApiHandler, tApiRequest, tApiResponse } from "interface";
 import withMiddleware from "middleware";
-import { getPost, listPost } from "services/post";
+import { getMdx, listMdx } from "services/post";
 
 let handler: tApiHandler<any> = async (
   req: tApiRequest,
@@ -11,10 +12,10 @@ let handler: tApiHandler<any> = async (
   try {
     const { id } = req.query;
     if (!id) {
-      const posts = await listPost();
+      const posts = await listMdx(api_config.post_dir);
       return res.status(200).json({ posts });
     } else {
-      const post = await getPost(id + "");
+      const post = await getMdx(api_config.post_dir, id + "");
       return res.status(200).json({ post });
     }
   } catch (e: any) {

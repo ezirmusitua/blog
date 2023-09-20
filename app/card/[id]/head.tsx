@@ -7,8 +7,8 @@ interface iProps {
   params: { id: string };
 }
 
-async function PostHead({ params: { id } }: iProps) {
-  const post = await getMdx(api_config.post_dir, id);
+async function CardHead({ params: { id } }: iProps) {
+  const post = await getMdx(api_config.card_dir, id);
   return (
     <head>
       <title>{`${post.frontmatter.title} - ${config.site_title}`}</title>
@@ -27,4 +27,4 @@ async function PostHead({ params: { id } }: iProps) {
   );
 }
 
-export default PostHead;
+export default CardHead;

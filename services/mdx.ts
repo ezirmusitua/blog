@@ -32,7 +32,7 @@ export function rehype_meta_as_attrs() {
   };
 }
 
-export async function parse_frontmatter(path: string) {
+export async function parseFrontmatter(path: string) {
   const content = await fs.readFile(path);
   const { data: frontmatter } = matter(content);
   return frontmatter as iFrontMatter;
