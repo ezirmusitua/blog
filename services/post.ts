@@ -53,7 +53,7 @@ const Author = {
 };
 
 export async function generateFeed(type: "rss" | "atom" | "json") {
-  const posts = await listMdx(api_config.post_dir);
+  const posts = await listMdx(api_config.posts_dir);
   const site_url = "https://ezirmusitua.site";
 
   const feed = new Feed({

@@ -1,3 +1,4 @@
+import { api_config } from "config";
 import { GetServerSideProps } from "next";
 import { listMdx } from "services/post";
 
@@ -26,8 +27,9 @@ function generateSiteMap(posts: Array<{ id: string }>) {
 function SiteMap() {}
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const posts = await listMdx();
-  const sitemap = generateSiteMap(posts);
+  const posts = await listMdx(api_config.posts_dir);
+  const cards = await listMdx(api_config.cards_dir);
+  const sitemap = generateSiteMap([...posts, ...cards]);
   res.setHeader("Content-Type", "text/xml");
   res.write(sitemap);
   res.end();

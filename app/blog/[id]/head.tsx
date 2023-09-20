@@ -8,7 +8,7 @@ interface iProps {
 }
 
 async function PostHead({ params: { id } }: iProps) {
-  const post = await getMdx(api_config.post_dir, id);
+  const post = await getMdx(api_config.posts_dir, id);
   return (
     <head>
       <title>{`${post.frontmatter.title} - ${config.site_title}`}</title>

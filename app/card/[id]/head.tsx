@@ -8,7 +8,15 @@ interface iProps {
 }
 
 async function CardHead({ params: { id } }: iProps) {
-  const post = await getMdx(api_config.card_dir, id);
+  const post = await getMdx(api_config.cards_dir, id);
+  const frontmatter = { ...post.frontmatter };
+  if (frontmatter.links) {
+    frontmatter.links = JSON.parse(frontmatter.links as string);
+  }
+  if (frontmatter.commands) {
+    frontmatter.commands = JSON.parse(frontmatter.commands as string);
+  }
+
   return (
     <head>
       <title>{`${post.frontmatter.title} - ${config.site_title}`}</title>

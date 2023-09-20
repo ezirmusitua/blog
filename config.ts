@@ -41,11 +41,11 @@ class ApiConfig {
     };
   }
 
-  get post_dir() {
+  get posts_dir() {
     return process.env.POSTS_DIR || "";
   }
 
-  get card_dir() {
+  get cards_dir() {
     return process.env.CARDS_DIR || "";
   }
 
@@ -73,7 +73,7 @@ class ApiConfig {
   }
 
   post_file(name: string) {
-    return path.join(this.post_dir, name);
+    return path.join(this.posts_dir, name);
   }
 }
 

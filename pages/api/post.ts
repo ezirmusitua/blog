@@ -12,10 +12,10 @@ let handler: tApiHandler<any> = async (
   try {
     const { id } = req.query;
     if (!id) {
-      const posts = await listMdx(api_config.post_dir);
+      const posts = await listMdx(api_config.posts_dir);
       return res.status(200).json({ posts });
     } else {
-      const post = await getMdx(api_config.post_dir, id + "");
+      const post = await getMdx(api_config.posts_dir, id + "");
       return res.status(200).json({ post });
     }
   } catch (e: any) {
