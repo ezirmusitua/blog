@@ -4,20 +4,14 @@ import withInterceptors from "interceptors";
 import { tApiHandler, tApiRequest, tApiResponse } from "interface";
 import withMiddleware from "middleware";
 
-type Data = {
-  enabled: boolean;
-};
+type tData = { enabled: boolean };
 
 function get<T>(url: string, headers = {}): Promise<T> {
   return new Promise((resolve, reject) => {
     const req = https.get(url, { headers }, (resp) => {
       let data = "";
-      resp.on("data", (chunk) => {
-        data += chunk;
-      });
-      resp.on("end", () => {
-        resolve(JSON.parse(data) as T);
-      });
+      resp.on("data", (chunk) => (data += chunk));
+      resp.on("end", () => resolve(JSON.parse(data) as T));
       resp;
     });
     req.on("error", (err) => {
@@ -57,7 +51,7 @@ function getRemoteIp(req: tApiRequest) {
 
 let handler: tApiHandler<any> = async (
   req: tApiRequest,
-  res: tApiResponse<Data>
+  res: tApiResponse<tData>
 ) => {
   res.status(200);
   const ip = getRemoteIp(req);
@@ -66,7 +60,7 @@ let handler: tApiHandler<any> = async (
     return;
   }
   const location = await getIpLocation(ip);
-  res.json({ enabled: !location.country_name.includes("China") });
+  res.json({ enabled: location.country_code2 != "CN" });
 };
 
 handler = withInterceptors(handler);

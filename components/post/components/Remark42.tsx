@@ -76,6 +76,7 @@ function Remark42({ remark_config }: iProps) {
     setLoading(true);
     const resp = await fetch(config.resource("/api/comment"));
     const { enabled } = await resp.json();
+    console.log("[DEBUG] enabled ", enabled);
     setCommentEnabled(enabled);
     setLoading(false);
   }, []);
