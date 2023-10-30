@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { RoundedAvatar } from "components/Avatar";
 
 function Social({
@@ -14,7 +13,7 @@ function Social({
 }) {
   return (
     <a href={href} rel="noreferrer">
-      <Image src={icon} width={size} height={size} alt={alt}></Image>
+      <img src={icon} width={size} height={size} alt={alt}></img>
     </a>
   );
 }

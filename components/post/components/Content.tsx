@@ -2,7 +2,7 @@
 
 import "highlight.js/styles/github.css";
 import { MDXRemote } from "next-mdx-remote";
-import Image from "next/image";
+// import Image from "next/image";
 import { iPost } from "../interface";
 import CodeBlock from "./CodeBlock";
 import Heading from "./Heading";
@@ -16,13 +16,13 @@ const AllowedComponents = {
     const width = props.width || 1920;
     const height = props.height || 1920;
     return (
-      <Image
+      <img
         {...props}
         width={width}
         height={height}
         alt={props.alt}
         sizes="(min-width: 1280px) 1920px, (min-width: 1024px) 1600px, 960px"
-      ></Image>
+      ></img>
     );
   },
   h1: (props: any) => <Heading {...props} level={1}></Heading>,

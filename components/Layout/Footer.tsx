@@ -1,5 +1,5 @@
 import config from "config";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 
 export const FooterHeight = 96;
@@ -19,12 +19,12 @@ function Footer() {
             {config.site_title}
           </Link>
           <Link href="/rss.xml" className="border-b-0">
-            <Image
+            <img
               alt="订阅 https://ezirmusitua.site 的 RSS 链接"
               src="/icons/icon_rss.png"
               width={14}
               height={14}
-            ></Image>
+            ></img>
           </Link>
         </div>
         <a

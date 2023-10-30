@@ -31,13 +31,12 @@ function PostItem({ post }: iProps) {
           </div>
           {post.cover_image && (
             <div className="relative w-full md:w-1/5 h-[140px] mb-2 md:mb-0 order-none md:order-2">
-              <Image
-                className="object-cover object-center"
+              <img
+                className="absolute left-0 top-0 w-full h-full object-cover object-center"
                 alt={post.title}
                 src={post.cover_image}
                 sizes="(min-width: 1280px) 480px, (min-width: 1024px) 400px, 240px"
-                fill
-              ></Image>
+              ></img>
             </div>
           )}
         </div>

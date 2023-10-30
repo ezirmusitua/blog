@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import { iFrontMatter } from "schema/post";
 import PublishedTime from "./PublishedTime";
 
@@ -11,14 +11,12 @@ function PostCover({ frontmatter }: iProps) {
     <div className="relative w-full px-8">
       {frontmatter.cover_image && (
         <div className="relative w-full h-[240px]">
-          <Image
-            priority
-            className="object-cover object-center"
+          <img
+            className="absolute left-0 top-0 w-full h-full object-cover object-center"
             src={frontmatter.cover_image}
             sizes="(min-width: 1280px) 1920px, (min-width: 1024px) 1600px, 960px"
             alt="cover"
-            fill
-          ></Image>
+          ></img>
         </div>
       )}
       <div className="relative w-full">

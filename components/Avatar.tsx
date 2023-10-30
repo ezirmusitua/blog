@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import md5 from "md5";
 import classnames from "classnames";
 
@@ -13,14 +13,14 @@ function Avatar({ src, size, alt = "", className = "" }: iProps) {
   const _className = classnames(className, "relative");
   return (
     <div className={_className} style={{ width: size, height: size }}>
-      <Image
+      <img
         alt={alt}
         className="object-contain object-center"
         src={src}
         width={size}
         height={size}
         sizes={`${size}px`}
-      ></Image>
+      ></img>
     </div>
   );
 }

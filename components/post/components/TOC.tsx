@@ -1,7 +1,7 @@
 "use client";
 import classnames from "classnames";
 import React, { useMemo, useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 
 interface iProps {
   children: React.ReactNode;
@@ -31,12 +31,12 @@ function TOC(props: iProps) {
         className="absolute top-[4px] right-[4px] hidden md:block"
         onClick={() => set_collapsed(!collapsed)}
       >
-        <Image
+        <img
           alt="toggle toc"
           src="/icons/list-bullet.svg"
           height={24}
           width={24}
-        ></Image>
+        ></img>
       </button>
     </nav>
   );

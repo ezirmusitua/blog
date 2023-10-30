@@ -1,5 +1,5 @@
 import classnames from "classnames";
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 
 interface iProps {
@@ -38,12 +38,12 @@ function Heading({ level, children, ...props }: iProps) {
     <a href={`#${props.id}`}>
       <div className="relative pl-10">
         <div className={icon_className}>
-          <Image
+          <img
             src="/icons/hashtag.svg"
             width={icon_size}
             height={icon_size}
             alt="heading"
-          ></Image>
+          ></img>
         </div>
         {elem}
       </div>
