@@ -30,7 +30,7 @@
     "remark-frontmatter": "^4.0.1",
     "remark-gfm": "^3.0.1",
     "remark-mdx-frontmatter": "^2.1.1",
-    "sharp": "^0.31.3",
+    "sharp": "^0.32.6",
     "sql.js": "^1.8.0",
     "styled-components": "^6.0.0-beta.9",
     "typeorm": "^0.3",
