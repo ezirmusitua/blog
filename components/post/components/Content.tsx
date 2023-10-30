@@ -9,7 +9,6 @@ import Heading from "./Heading";
 import TOC from "./TOC";
 
 const AllowedComponents = {
-  Image,
   code: CodeBlock,
   nav: TOC,
   img: (props: any) => {
