@@ -4,11 +4,7 @@ REMOTE=${1:-"qcloud.apple"}
 APP=${2:-"blog"}
 
 rsync -avL --delete \
-  --exclude=.vscode \
-  --exclude=node_modules \
-  --exclude=.git \
-  --exclude=.next \
-  --exclude=.vscode \
+  --exclude={.git,.next,.vscode,.yarn,node_modules} \
   --exclude=.env.local \
   . \
   $REMOTE:/src/blog
